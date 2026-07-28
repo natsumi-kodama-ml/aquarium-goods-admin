@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Product } from "@/lib/types";
 import StatusBadge from "./StatusBadge";
+import ProductImage from "./ProductImage";
 
 export default function ProductTable({ products }: { products: Product[] }) {
   return (
@@ -8,6 +9,9 @@ export default function ProductTable({ products }: { products: Product[] }) {
       <table className="min-w-full divide-y divide-gray-200 text-sm">
         <thead className="bg-gray-50">
           <tr>
+            <th className="px-4 py-2 text-left font-medium text-gray-600">
+              画像
+            </th>
             <th className="px-4 py-2 text-left font-medium text-gray-600">
               商品名
             </th>
@@ -31,6 +35,14 @@ export default function ProductTable({ products }: { products: Product[] }) {
         <tbody className="divide-y divide-gray-100">
           {products.map((p) => (
             <tr key={p.id} className="hover:bg-gray-50">
+              <td className="px-4 py-2">
+                <ProductImage
+                  imageUrl={p.imageUrl}
+                  animalMotif={p.animalMotif}
+                  alt={p.name}
+                  className="h-10 w-10 rounded-md text-lg"
+                />
+              </td>
               <td className="px-4 py-2">
                 <Link
                   href={`/products/${p.id}`}

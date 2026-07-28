@@ -1,10 +1,12 @@
 "use client";
 
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useProducts } from "@/hooks/useProducts";
 import { CATEGORIES, Category } from "@/lib/types";
+import { fileToResizedDataUrl } from "@/lib/resizeImage";
+import ProductImage from "./ProductImage";
 
 interface ProductFormProps {
   mode: "create" | "edit";
@@ -15,6 +17,7 @@ interface FormState {
   name: string;
   sku: string;
   category: Category;
+  imageUrl: string;
   price: string;
   stock: string;
   published: boolean;
@@ -27,6 +30,7 @@ const emptyForm: FormState = {
   name: "",
   sku: "",
   category: CATEGORIES[0],
+  imageUrl: "",
   price: "",
   stock: "",
   published: true,
@@ -48,6 +52,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
           name: existingProduct.name,
           sku: existingProduct.sku,
           category: existingProduct.category,
+          imageUrl: existingProduct.imageUrl,
           price: String(existingProduct.price),
           stock: String(existingProduct.stock),
           published: existingProduct.published,
@@ -60,6 +65,8 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, string>>>(
     {}
   );
+  const [imageProcessing, setImageProcessing] = useState(false);
+  const [imageError, setImageError] = useState("");
 
   if (mode === "edit" && !existingProduct) {
     return (
@@ -74,6 +81,22 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
 
   function update<K extends keyof FormState>(key: K, value: FormState[K]) {
     setForm((prev) => ({ ...prev, [key]: value }));
+  }
+
+  async function handleImageChange(e: ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    e.target.value = "";
+    if (!file) return;
+    setImageError("");
+    setImageProcessing(true);
+    try {
+      const dataUrl = await fileToResizedDataUrl(file);
+      update("imageUrl", dataUrl);
+    } catch {
+      setImageError("画像の読み込みに失敗しました");
+    } finally {
+      setImageProcessing(false);
+    }
   }
 
   function validate(): Partial<Record<keyof FormState, string>> {
@@ -101,6 +124,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
       name: form.name.trim(),
       sku: form.sku.trim(),
       category: form.category,
+      imageUrl: form.imageUrl,
       price: Number(form.price),
       stock: Number(form.stock),
       published: form.published,
@@ -128,6 +152,42 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
         onSubmit={handleSubmit}
         className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6"
       >
+        <div className="flex items-center gap-4">
+          <ProductImage
+            imageUrl={form.imageUrl}
+            animalMotif={form.animalMotif}
+            alt="商品画像プレビュー"
+            className="h-24 w-24 shrink-0 rounded-lg text-4xl"
+          />
+          <div className="flex flex-col gap-1">
+            <span className="text-sm font-medium text-gray-700">商品画像</span>
+            <label className="w-fit cursor-pointer rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
+              画像を選択
+              <input
+                type="file"
+                accept="image/*"
+                onChange={handleImageChange}
+                className="hidden"
+              />
+            </label>
+            {imageProcessing && (
+              <span className="text-xs text-gray-500">変換中...</span>
+            )}
+            {imageError && (
+              <span className="text-xs text-red-600">{imageError}</span>
+            )}
+            {form.imageUrl && !imageProcessing && (
+              <button
+                type="button"
+                onClick={() => update("imageUrl", "")}
+                className="w-fit text-xs text-gray-500 hover:underline"
+              >
+                画像を削除
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
           <Field label="商品名" error={errors.name}>
             <input

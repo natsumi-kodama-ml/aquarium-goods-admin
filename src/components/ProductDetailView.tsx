@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useProducts } from "@/hooks/useProducts";
 import StatusBadge from "./StatusBadge";
+import ProductImage from "./ProductImage";
 
 function formatDate(iso: string) {
   return new Date(iso).toLocaleString("ja-JP", {
@@ -41,13 +42,21 @@ export default function ProductDetailView({
 
       <div className="rounded-lg border border-gray-200 bg-white p-6">
         <div className="flex items-start justify-between gap-4">
-          <div>
-            <h1 className="text-xl font-semibold text-gray-900">
-              {product.name}
-            </h1>
-            <p className="mt-1 text-sm text-gray-500">
-              {product.sku} ・ {product.category}
-            </p>
+          <div className="flex items-start gap-4">
+            <ProductImage
+              imageUrl={product.imageUrl}
+              animalMotif={product.animalMotif}
+              alt={product.name}
+              className="h-24 w-24 shrink-0 rounded-lg text-4xl"
+            />
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900">
+                {product.name}
+              </h1>
+              <p className="mt-1 text-sm text-gray-500">
+                {product.sku} ・ {product.category}
+              </p>
+            </div>
           </div>
           <div className="flex items-center gap-3">
             <StatusBadge published={product.published} />
