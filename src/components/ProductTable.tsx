@@ -5,36 +5,36 @@ import ProductImage from "./ProductImage";
 
 export default function ProductTable({ products }: { products: Product[] }) {
   return (
-    <div className="overflow-x-auto rounded-lg border border-gray-200 bg-white">
-      <table className="min-w-full divide-y divide-gray-200 text-sm">
-        <thead className="bg-gray-50">
+    <div className="overflow-x-auto rounded-2xl border border-sky-100 bg-white shadow-sm">
+      <table className="min-w-full divide-y divide-sky-100 text-sm">
+        <thead className="bg-gradient-to-r from-sky-50 to-teal-50">
           <tr>
-            <th className="px-4 py-2 text-left font-medium text-gray-600">
+            <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-sky-700">
               画像
             </th>
-            <th className="px-4 py-2 text-left font-medium text-gray-600">
+            <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-sky-700">
               商品名
             </th>
-            <th className="px-4 py-2 text-left font-medium text-gray-600">
+            <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-sky-700">
               SKU
             </th>
-            <th className="px-4 py-2 text-left font-medium text-gray-600">
+            <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-sky-700">
               カテゴリ
             </th>
-            <th className="px-4 py-2 text-right font-medium text-gray-600">
+            <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-sky-700">
               価格
             </th>
-            <th className="px-4 py-2 text-right font-medium text-gray-600">
+            <th className="px-4 py-2.5 text-right text-xs font-semibold uppercase tracking-wide text-sky-700">
               在庫数
             </th>
-            <th className="px-4 py-2 text-left font-medium text-gray-600">
+            <th className="px-4 py-2.5 text-left text-xs font-semibold uppercase tracking-wide text-sky-700">
               公開状態
             </th>
           </tr>
         </thead>
-        <tbody className="divide-y divide-gray-100">
+        <tbody className="divide-y divide-sky-50">
           {products.map((p) => (
-            <tr key={p.id} className="hover:bg-gray-50">
+            <tr key={p.id} className="hover:bg-sky-50/60">
               <td className="px-4 py-2">
                 <ProductImage
                   imageUrl={p.imageUrl}

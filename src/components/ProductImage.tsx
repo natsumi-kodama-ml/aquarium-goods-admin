@@ -38,7 +38,7 @@ export default function ProductImage({
   }
   return (
     <div
-      className={`flex items-center justify-center bg-sky-50 ${className}`}
+      className={`flex items-center justify-center bg-gradient-to-br from-sky-100 via-cyan-100 to-teal-100 ${className}`}
       aria-hidden="true"
     >
       <span>{getPlaceholderEmoji(animalMotif)}</span>

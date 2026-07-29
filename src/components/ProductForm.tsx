@@ -26,6 +26,9 @@ interface FormState {
   notes: string;
 }
 
+const inputClass =
+  "w-full rounded-xl border border-sky-200 px-3 py-1.5 text-sm focus:border-teal-400 focus:outline-none focus:ring-2 focus:ring-teal-100";
+
 const emptyForm: FormState = {
   name: "",
   sku: "",
@@ -144,24 +147,24 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
 
   return (
     <div className="flex flex-col gap-4">
-      <h1 className="text-xl font-semibold text-gray-900">
-        {mode === "create" ? "商品の新規登録" : "商品の編集"}
+      <h1 className="text-2xl font-bold text-slate-800">
+        {mode === "create" ? "🐬 商品の新規登録" : "🐬 商品の編集"}
       </h1>
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 rounded-lg border border-gray-200 bg-white p-6"
+        className="flex flex-col gap-4 rounded-2xl border border-sky-100 bg-white p-6 shadow-sm"
       >
         <div className="flex items-center gap-4">
           <ProductImage
             imageUrl={form.imageUrl}
             animalMotif={form.animalMotif}
             alt="商品画像プレビュー"
-            className="h-24 w-24 shrink-0 rounded-lg text-4xl"
+            className="h-24 w-24 shrink-0 rounded-2xl text-4xl"
           />
           <div className="flex flex-col gap-1">
-            <span className="text-sm font-medium text-gray-700">商品画像</span>
-            <label className="w-fit cursor-pointer rounded-md border border-gray-300 px-3 py-1.5 text-sm text-gray-700 hover:bg-gray-50">
+            <span className="text-sm font-medium text-sky-700">商品画像</span>
+            <label className="w-fit cursor-pointer rounded-full border border-sky-300 px-4 py-1.5 text-sm text-sky-700 hover:bg-sky-50">
               画像を選択
               <input
                 type="file"
@@ -180,7 +183,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
               <button
                 type="button"
                 onClick={() => update("imageUrl", "")}
-                className="w-fit text-xs text-gray-500 hover:underline"
+                className="w-fit text-xs text-rose-400 hover:underline"
               >
                 画像を削除
               </button>
@@ -194,7 +197,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
               type="text"
               value={form.name}
               onChange={(e) => update("name", e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+              className={inputClass}
             />
           </Field>
 
@@ -203,7 +206,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
               type="text"
               value={form.sku}
               onChange={(e) => update("sku", e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+              className={inputClass}
             />
           </Field>
 
@@ -211,7 +214,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
             <select
               value={form.category}
               onChange={(e) => update("category", e.target.value as Category)}
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+              className={inputClass}
             >
               {CATEGORIES.map((c) => (
                 <option key={c} value={c}>
@@ -227,7 +230,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
               value={form.animalMotif}
               onChange={(e) => update("animalMotif", e.target.value)}
               placeholder="例: ラッコ, ペンギン"
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+              className={inputClass}
             />
           </Field>
 
@@ -236,7 +239,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
               type="number"
               value={form.price}
               onChange={(e) => update("price", e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+              className={inputClass}
             />
           </Field>
 
@@ -245,7 +248,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
               type="number"
               value={form.stock}
               onChange={(e) => update("stock", e.target.value)}
-              className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+              className={inputClass}
             />
           </Field>
         </div>
@@ -255,7 +258,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
             type="checkbox"
             checked={form.published}
             onChange={(e) => update("published", e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300"
+            className="h-4 w-4 rounded border-gray-300 accent-teal-500"
           />
           公開する
         </label>
@@ -265,7 +268,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
             value={form.description}
             onChange={(e) => update("description", e.target.value)}
             rows={3}
-            className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+            className={inputClass}
           />
         </Field>
 
@@ -274,14 +277,14 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
             value={form.notes}
             onChange={(e) => update("notes", e.target.value)}
             rows={2}
-            className="w-full rounded-md border border-gray-300 px-3 py-1.5 text-sm focus:border-sky-500 focus:outline-none"
+            className={inputClass}
           />
         </Field>
 
         <div className="flex items-center gap-3 pt-2">
           <button
             type="submit"
-            className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700"
+            className="rounded-full bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-sky-600 hover:to-teal-600 hover:shadow-lg"
           >
             {mode === "create" ? "登録する" : "保存する"}
           </button>
@@ -291,7 +294,7 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
                 ? `/products/${existingProduct.id}`
                 : "/"
             }
-            className="text-sm text-gray-600 hover:underline"
+            className="text-sm text-gray-500 hover:underline"
           >
             キャンセル
           </Link>

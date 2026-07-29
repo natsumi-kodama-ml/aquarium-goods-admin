@@ -31,12 +31,12 @@ export default function ProductListPage() {
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-semibold text-gray-900">
-          水族館グッズ 商品マスタ
+        <h1 className="text-2xl font-bold text-slate-800">
+          🐠 水族館グッズ 商品マスタ
         </h1>
         <Link
           href="/products/new"
-          className="rounded-md bg-sky-600 px-4 py-2 text-sm font-medium text-white hover:bg-sky-700"
+          className="rounded-full bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-sky-600 hover:to-teal-600 hover:shadow-lg"
         >
           + 新規登録
         </Link>
@@ -52,8 +52,8 @@ export default function ProductListPage() {
       />
 
       {filteredProducts.length === 0 ? (
-        <p className="rounded-lg border border-dashed border-gray-300 bg-white p-8 text-center text-sm text-gray-500">
-          条件に一致する商品がありません
+        <p className="rounded-2xl border-2 border-dashed border-sky-200 bg-white p-8 text-center text-sm text-slate-500">
+          🐚 条件に一致する商品がありません
         </p>
       ) : (
         <ProductTable products={filteredProducts} />
