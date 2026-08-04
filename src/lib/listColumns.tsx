@@ -1,8 +1,10 @@
 import { ReactNode } from "react";
 import { Product } from "./types";
 import StatusBadge from "@/components/StatusBadge";
+import ProductImage from "@/components/ProductImage";
 
 export type ColumnKey =
+  | "image"
   | "sku"
   | "category"
   | "price"
@@ -27,6 +29,18 @@ function formatDate(iso: string) {
 }
 
 export const COLUMN_DEFS: ColumnDef[] = [
+  {
+    key: "image",
+    label: "画像",
+    render: (p) => (
+      <ProductImage
+        imageUrl={p.imageUrl}
+        animalMotif={p.animalMotif}
+        alt={p.name}
+        className="h-10 w-10 rounded-md text-lg"
+      />
+    ),
+  },
   { key: "sku", label: "SKU", render: (p) => p.sku },
   { key: "category", label: "カテゴリ", render: (p) => p.category },
   {
@@ -63,6 +77,7 @@ export const COLUMN_DEFS: ColumnDef[] = [
 ];
 
 export const DEFAULT_VISIBLE_COLUMNS: ColumnKey[] = [
+  "image",
   "sku",
   "category",
   "price",
