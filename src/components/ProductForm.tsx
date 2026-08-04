@@ -44,7 +44,7 @@ const emptyForm: FormState = {
 
 export default function ProductForm({ mode, productId }: ProductFormProps) {
   const router = useRouter();
-  const { getProduct, addProduct, updateProduct } = useProducts();
+  const { products, getProduct, addProduct, updateProduct } = useProducts();
 
   const existingProduct =
     mode === "edit" && productId ? getProduct(productId) : undefined;
@@ -105,7 +105,17 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
   function validate(): Partial<Record<keyof FormState, string>> {
     const nextErrors: Partial<Record<keyof FormState, string>> = {};
     if (form.name.trim() === "") nextErrors.name = "商品名を入力してください";
-    if (form.sku.trim() === "") nextErrors.sku = "SKUを入力してください";
+    if (form.sku.trim() === "") {
+      nextErrors.sku = "SKUを入力してください";
+    } else {
+      const normalizedSku = form.sku.trim().toLowerCase();
+      const isDuplicate = products.some(
+        (p) =>
+          p.sku.trim().toLowerCase() === normalizedSku &&
+          p.id !== existingProduct?.id
+      );
+      if (isDuplicate) nextErrors.sku = "このSKUは既に使われています";
+    }
     const price = Number(form.price);
     if (form.price.trim() === "" || Number.isNaN(price) || price < 0) {
       nextErrors.price = "0以上の価格を入力してください";

@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useProducts } from "@/hooks/useProducts";
 import StatusBadge from "./StatusBadge";
 import ProductImage from "./ProductImage";
@@ -20,7 +21,8 @@ export default function ProductDetailView({
 }: {
   productId: string;
 }) {
-  const { getProduct } = useProducts();
+  const router = useRouter();
+  const { getProduct, deleteProduct } = useProducts();
   const product = getProduct(productId);
 
   if (!product) {
@@ -32,6 +34,16 @@ export default function ProductDetailView({
         </Link>
       </div>
     );
+  }
+
+  function handleDelete() {
+    if (!product) return;
+    const confirmed = window.confirm(
+      `「${product.name}」を削除します。この操作は取り消せません。よろしいですか？`
+    );
+    if (!confirmed) return;
+    deleteProduct(product.id);
+    router.push("/");
   }
 
   return (
@@ -60,6 +72,13 @@ export default function ProductDetailView({
           </div>
           <div className="flex items-center gap-3">
             <StatusBadge published={product.published} />
+            <button
+              type="button"
+              onClick={handleDelete}
+              className="rounded-full border border-rose-200 px-4 py-2.5 text-sm font-semibold text-rose-500 transition hover:bg-rose-50"
+            >
+              削除
+            </button>
             <Link
               href={`/products/${product.id}/edit`}
               className="rounded-full bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-sky-600 hover:to-teal-600 hover:shadow-lg"

@@ -22,6 +22,7 @@ interface ColumnDef {
   align?: "left" | "right";
   truncate?: boolean;
   render: (product: Product) => ReactNode;
+  sortValue?: (product: Product) => string | number;
 }
 
 function formatDate(iso: string) {
@@ -41,29 +42,38 @@ export const COLUMN_DEFS: ColumnDef[] = [
       />
     ),
   },
-  { key: "sku", label: "SKU", render: (p) => p.sku },
-  { key: "category", label: "カテゴリ", render: (p) => p.category },
+  { key: "sku", label: "SKU", render: (p) => p.sku, sortValue: (p) => p.sku },
+  {
+    key: "category",
+    label: "カテゴリ",
+    render: (p) => p.category,
+    sortValue: (p) => p.category,
+  },
   {
     key: "price",
     label: "価格",
     align: "right",
     render: (p) => `¥${p.price.toLocaleString()}`,
+    sortValue: (p) => p.price,
   },
   {
     key: "stock",
     label: "在庫数",
     align: "right",
     render: (p) => p.stock.toLocaleString(),
+    sortValue: (p) => p.stock,
   },
   {
     key: "published",
     label: "公開状態",
     render: (p) => <StatusBadge published={p.published} />,
+    sortValue: (p) => (p.published ? 1 : 0),
   },
   {
     key: "animalMotif",
     label: "生き物モチーフ",
     render: (p) => p.animalMotif || "-",
+    sortValue: (p) => p.animalMotif,
   },
   {
     key: "description",
@@ -71,8 +81,18 @@ export const COLUMN_DEFS: ColumnDef[] = [
     truncate: true,
     render: (p) => p.description || "-",
   },
-  { key: "createdAt", label: "登録日", render: (p) => formatDate(p.createdAt) },
-  { key: "updatedAt", label: "更新日", render: (p) => formatDate(p.updatedAt) },
+  {
+    key: "createdAt",
+    label: "登録日",
+    render: (p) => formatDate(p.createdAt),
+    sortValue: (p) => p.createdAt,
+  },
+  {
+    key: "updatedAt",
+    label: "更新日",
+    render: (p) => formatDate(p.updatedAt),
+    sortValue: (p) => p.updatedAt,
+  },
   { key: "notes", label: "備考", truncate: true, render: (p) => p.notes || "-" },
 ];
 

@@ -68,3 +68,22 @@ export function updateProduct(id: string, input: ProductInput) {
     )
   );
 }
+
+export function deleteProduct(id: string) {
+  persistAndNotify(ensureLoaded().filter((p) => p.id !== id));
+}
+
+export function deleteProducts(ids: string[]) {
+  const idSet = new Set(ids);
+  persistAndNotify(ensureLoaded().filter((p) => !idSet.has(p.id)));
+}
+
+export function setPublishedForProducts(ids: string[], published: boolean) {
+  const idSet = new Set(ids);
+  const now = new Date().toISOString();
+  persistAndNotify(
+    ensureLoaded().map((p) =>
+      idSet.has(p.id) ? { ...p, published, updatedAt: now } : p
+    )
+  );
+}
