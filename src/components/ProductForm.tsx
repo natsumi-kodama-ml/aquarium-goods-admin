@@ -153,135 +153,151 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
 
       <form
         onSubmit={handleSubmit}
-        className="flex flex-col gap-4 rounded-2xl border border-sky-100 bg-white p-6 shadow-sm"
+        className="flex flex-col gap-6 rounded-2xl border border-sky-100 bg-white p-6 shadow-sm"
       >
-        <div className="flex items-center gap-4">
-          <ProductImage
-            imageUrl={form.imageUrl}
-            animalMotif={form.animalMotif}
-            alt="商品画像プレビュー"
-            className="h-24 w-24 shrink-0 rounded-2xl text-4xl"
-          />
-          <div className="flex flex-col gap-1">
-            <span className="text-sm font-medium text-sky-700">商品画像</span>
-            <label className="w-fit cursor-pointer rounded-full border border-sky-300 px-4 py-1.5 text-sm text-sky-700 hover:bg-sky-50">
-              画像を選択
+        <FormSection title="基本情報" description="商品を識別するための情報です">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field label="商品名" error={errors.name}>
               <input
-                type="file"
-                accept="image/*"
-                onChange={handleImageChange}
-                className="hidden"
+                type="text"
+                value={form.name}
+                onChange={(e) => update("name", e.target.value)}
+                className={inputClass}
               />
-            </label>
-            {imageProcessing && (
-              <span className="text-xs text-gray-500">変換中...</span>
-            )}
-            {imageError && (
-              <span className="text-xs text-red-600">{imageError}</span>
-            )}
-            {form.imageUrl && !imageProcessing && (
-              <button
-                type="button"
-                onClick={() => update("imageUrl", "")}
-                className="w-fit text-xs text-rose-400 hover:underline"
+            </Field>
+
+            <Field label="SKU" error={errors.sku}>
+              <input
+                type="text"
+                value={form.sku}
+                onChange={(e) => update("sku", e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+
+            <Field label="カテゴリ">
+              <select
+                value={form.category}
+                onChange={(e) =>
+                  update("category", e.target.value as Category)
+                }
+                className={inputClass}
               >
-                画像を削除
-              </button>
-            )}
+                {CATEGORIES.map((c) => (
+                  <option key={c} value={c}>
+                    {c}
+                  </option>
+                ))}
+              </select>
+            </Field>
+
+            <Field label="生き物モチーフ">
+              <input
+                type="text"
+                value={form.animalMotif}
+                onChange={(e) => update("animalMotif", e.target.value)}
+                placeholder="例: ラッコ, ペンギン"
+                className={inputClass}
+              />
+            </Field>
           </div>
-        </div>
+        </FormSection>
 
-        <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <Field label="商品名" error={errors.name}>
+        <FormSection title="販売情報" description="価格・在庫・公開可否を管理します">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            <Field label="価格(円)" error={errors.price}>
+              <input
+                type="number"
+                value={form.price}
+                onChange={(e) => update("price", e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+
+            <Field label="在庫数" error={errors.stock}>
+              <input
+                type="number"
+                value={form.stock}
+                onChange={(e) => update("stock", e.target.value)}
+                className={inputClass}
+              />
+            </Field>
+          </div>
+
+          <label className="mt-4 flex items-center gap-2 text-sm text-gray-700">
             <input
-              type="text"
-              value={form.name}
-              onChange={(e) => update("name", e.target.value)}
+              type="checkbox"
+              checked={form.published}
+              onChange={(e) => update("published", e.target.checked)}
+              className="h-4 w-4 rounded border-gray-300 accent-teal-500"
+            />
+            公開する
+          </label>
+        </FormSection>
+
+        <FormSection title="表示情報" description="一覧・詳細・店頭で見せる情報です">
+          <div className="flex items-center gap-4">
+            <ProductImage
+              imageUrl={form.imageUrl}
+              animalMotif={form.animalMotif}
+              alt="商品画像プレビュー"
+              className="h-24 w-24 shrink-0 rounded-2xl text-4xl"
+            />
+            <div className="flex flex-col gap-1">
+              <span className="text-sm font-medium text-sky-700">
+                商品画像
+              </span>
+              <label className="w-fit cursor-pointer rounded-full border border-sky-300 px-4 py-1.5 text-sm text-sky-700 hover:bg-sky-50">
+                画像を選択
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="hidden"
+                />
+              </label>
+              {imageProcessing && (
+                <span className="text-xs text-gray-500">変換中...</span>
+              )}
+              {imageError && (
+                <span className="text-xs text-red-600">{imageError}</span>
+              )}
+              {form.imageUrl && !imageProcessing && (
+                <button
+                  type="button"
+                  onClick={() => update("imageUrl", "")}
+                  className="w-fit text-xs text-rose-400 hover:underline"
+                >
+                  画像を削除
+                </button>
+              )}
+            </div>
+          </div>
+
+          <div className="mt-4">
+            <Field label="商品説明">
+              <textarea
+                value={form.description}
+                onChange={(e) => update("description", e.target.value)}
+                rows={3}
+                className={inputClass}
+              />
+            </Field>
+          </div>
+        </FormSection>
+
+        <FormSection title="その他">
+          <Field label="備考">
+            <textarea
+              value={form.notes}
+              onChange={(e) => update("notes", e.target.value)}
+              rows={2}
               className={inputClass}
             />
           </Field>
+        </FormSection>
 
-          <Field label="SKU" error={errors.sku}>
-            <input
-              type="text"
-              value={form.sku}
-              onChange={(e) => update("sku", e.target.value)}
-              className={inputClass}
-            />
-          </Field>
-
-          <Field label="カテゴリ">
-            <select
-              value={form.category}
-              onChange={(e) => update("category", e.target.value as Category)}
-              className={inputClass}
-            >
-              {CATEGORIES.map((c) => (
-                <option key={c} value={c}>
-                  {c}
-                </option>
-              ))}
-            </select>
-          </Field>
-
-          <Field label="生き物モチーフ">
-            <input
-              type="text"
-              value={form.animalMotif}
-              onChange={(e) => update("animalMotif", e.target.value)}
-              placeholder="例: ラッコ, ペンギン"
-              className={inputClass}
-            />
-          </Field>
-
-          <Field label="価格(円)" error={errors.price}>
-            <input
-              type="number"
-              value={form.price}
-              onChange={(e) => update("price", e.target.value)}
-              className={inputClass}
-            />
-          </Field>
-
-          <Field label="在庫数" error={errors.stock}>
-            <input
-              type="number"
-              value={form.stock}
-              onChange={(e) => update("stock", e.target.value)}
-              className={inputClass}
-            />
-          </Field>
-        </div>
-
-        <label className="flex items-center gap-2 text-sm text-gray-700">
-          <input
-            type="checkbox"
-            checked={form.published}
-            onChange={(e) => update("published", e.target.checked)}
-            className="h-4 w-4 rounded border-gray-300 accent-teal-500"
-          />
-          公開する
-        </label>
-
-        <Field label="商品説明">
-          <textarea
-            value={form.description}
-            onChange={(e) => update("description", e.target.value)}
-            rows={3}
-            className={inputClass}
-          />
-        </Field>
-
-        <Field label="備考">
-          <textarea
-            value={form.notes}
-            onChange={(e) => update("notes", e.target.value)}
-            rows={2}
-            className={inputClass}
-          />
-        </Field>
-
-        <div className="flex items-center gap-3 pt-2">
+        <div className="flex items-center gap-3 border-t border-sky-100 pt-4">
           <button
             type="submit"
             className="rounded-full bg-gradient-to-r from-sky-500 to-teal-500 px-5 py-2.5 text-sm font-semibold text-white shadow-md transition hover:from-sky-600 hover:to-teal-600 hover:shadow-lg"
@@ -301,6 +317,28 @@ export default function ProductForm({ mode, productId }: ProductFormProps) {
         </div>
       </form>
     </div>
+  );
+}
+
+function FormSection({
+  title,
+  description,
+  children,
+}: {
+  title: string;
+  description?: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section>
+      <div className="mb-4 flex items-baseline gap-2 border-l-4 border-teal-400 pl-3">
+        <h2 className="text-sm font-bold text-slate-800">{title}</h2>
+        {description && (
+          <span className="text-xs text-gray-400">{description}</span>
+        )}
+      </div>
+      {children}
+    </section>
   );
 }
 
