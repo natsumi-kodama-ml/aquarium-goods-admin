@@ -3,11 +3,14 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import { useProducts } from "@/hooks/useProducts";
+import { useColumnVisibility } from "@/hooks/useColumnVisibility";
 import ProductFilters from "./ProductFilters";
 import ProductTable from "./ProductTable";
+import ColumnSettings from "./ColumnSettings";
 
 export default function ProductListPage() {
   const { products } = useProducts();
+  const { visibleColumns } = useColumnVisibility();
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
@@ -59,6 +62,11 @@ export default function ProductListPage() {
         onStatusChange={setStatus}
       />
 
+      <div className="flex items-center justify-between">
+        <p className="text-xs text-slate-400">{filteredProducts.length}件表示中</p>
+        <ColumnSettings />
+      </div>
+
       {filteredProducts.length === 0 ? (
         <div className="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-sky-200 bg-white p-8 text-center">
           <p className="text-sm text-slate-500">
@@ -80,7 +88,7 @@ export default function ProductListPage() {
           )}
         </div>
       ) : (
-        <ProductTable products={filteredProducts} />
+        <ProductTable products={filteredProducts} visibleColumns={visibleColumns} />
       )}
     </div>
   );
