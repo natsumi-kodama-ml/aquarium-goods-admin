@@ -28,6 +28,14 @@ export default function ProductListPage() {
     });
   }, [products, search, category, status]);
 
+  const isFiltered = search.trim() !== "" || category !== "all" || status !== "all";
+
+  function resetFilters() {
+    setSearch("");
+    setCategory("all");
+    setStatus("all");
+  }
+
   return (
     <div className="flex flex-col gap-4">
       <div className="flex items-center justify-between">
@@ -52,9 +60,25 @@ export default function ProductListPage() {
       />
 
       {filteredProducts.length === 0 ? (
-        <p className="rounded-2xl border-2 border-dashed border-sky-200 bg-white p-8 text-center text-sm text-slate-500">
-          🐚 条件に一致する商品がありません
-        </p>
+        <div className="flex flex-col items-center gap-3 rounded-2xl border-2 border-dashed border-sky-200 bg-white p-8 text-center">
+          <p className="text-sm text-slate-500">
+            🐚 条件に一致する商品がありません
+          </p>
+          {isFiltered && (
+            <>
+              <p className="text-xs text-slate-400">
+                キーワードやカテゴリ・公開状態の絞り込みを見直してみてください
+              </p>
+              <button
+                type="button"
+                onClick={resetFilters}
+                className="rounded-full bg-gradient-to-r from-sky-500 to-teal-500 px-4 py-2 text-xs font-semibold text-white shadow-sm transition hover:from-sky-600 hover:to-teal-600"
+              >
+                絞り込みをリセット
+              </button>
+            </>
+          )}
+        </div>
       ) : (
         <ProductTable products={filteredProducts} />
       )}
