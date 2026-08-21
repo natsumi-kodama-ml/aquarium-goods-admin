@@ -18,7 +18,7 @@ export default function ProductFilters({
   onStatusChange,
 }: ProductFiltersProps) {
   return (
-    <div className="flex flex-wrap gap-3 rounded-2xl border border-sky-100 bg-white p-4 shadow-sm">
+    <div className="flex flex-wrap gap-3 rounded-2xl bg-white p-4 shadow-sm">
       <div className="flex flex-col gap-1">
         <label htmlFor="search" className="text-xs font-medium text-sky-700">
           検索(商品名・SKU)

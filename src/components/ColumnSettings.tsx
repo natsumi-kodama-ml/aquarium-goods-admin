@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { Gear } from "@phosphor-icons/react";
 import { useColumnVisibility } from "@/hooks/useColumnVisibility";
 
 export default function ColumnSettings() {
@@ -13,9 +14,10 @@ export default function ColumnSettings() {
       <button
         type="button"
         onClick={() => setOpen((v) => !v)}
-        className="rounded-full border border-sky-200 bg-white px-4 py-1.5 text-sm text-sky-700 hover:bg-sky-50"
+        className="inline-flex items-center gap-1.5 rounded-full border border-sky-200 bg-white px-4 py-1.5 text-sm text-sky-700 hover:bg-sky-50"
       >
-        ⚙️ 表示項目
+        <Gear size={16} weight="bold" />
+        表示項目
       </button>
       {open && (
         <>
@@ -24,7 +26,7 @@ export default function ColumnSettings() {
             onClick={() => setOpen(false)}
             aria-hidden="true"
           />
-          <div className="absolute right-0 z-20 mt-2 w-60 rounded-xl border border-sky-100 bg-white p-3 shadow-lg">
+          <div className="absolute right-0 z-20 mt-2 w-60 rounded-xl bg-white p-3 shadow-lg">
             <p className="mb-2 text-xs font-semibold text-slate-500">
               一覧に表示する項目
             </p>

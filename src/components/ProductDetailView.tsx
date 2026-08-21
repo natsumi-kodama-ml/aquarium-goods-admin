@@ -52,7 +52,7 @@ export default function ProductDetailView({
         ← 一覧に戻る
       </Link>
 
-      <div className="rounded-2xl border border-sky-100 bg-white p-6 shadow-sm">
+      <div className="rounded-2xl bg-white p-6 shadow-sm">
         <div className="flex items-start justify-between gap-4">
           <div className="flex items-start gap-4">
             <ProductImage

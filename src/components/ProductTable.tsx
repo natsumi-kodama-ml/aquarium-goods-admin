@@ -106,7 +106,7 @@ export default function ProductTable({
   }, [someSelected, allSelected]);
 
   return (
-    <div className="overflow-x-auto rounded-2xl border border-sky-100 bg-white shadow-sm">
+    <div className="overflow-x-auto rounded-2xl bg-white shadow-sm">
       <table className="w-full min-w-[640px] divide-y divide-sky-100 text-sm">
         <thead className="bg-gradient-to-r from-sky-50 to-teal-50">
           <tr>
